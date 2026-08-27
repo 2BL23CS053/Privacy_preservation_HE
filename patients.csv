@@ -1,0 +1,3 @@
+patient_id,Name,Disease,Age,Heart_Rate,SpO2
+P101,John Doe,Diabetes,45,72,98
+P102,Emma Smith,Asthma,29,80,99

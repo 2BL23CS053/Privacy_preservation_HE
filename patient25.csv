@@ -1,0 +1,26 @@
+patient_id,Age,Disease,Admission_Date,Blood_Sugar,Heart_Rate,Temperature,Weight_kg,Height_cm,Doctor_Name
+P701,45,Hypertension,18-08-2026,110,72,98.4,75,170,Dr. Smith
+P702,52,Diabetes,18-08-2026,160,80,98.6,82,165,Dr. Adams
+P703,38,Asthma,18-08-2026,95,88,99.1,64,160,Dr. Baker
+P704,61,Cardiac Arrhythmia,19-08-2026,125,95,98.2,78,172,Dr. Evans
+P705,29,Migraine,19-08-2026,88,70,98.5,58,155,Dr. Clark
+P706,44,Pneumonia,19-08-2026,105,92,101.2,70,168,Dr. White
+P707,67,Osteoarthritis,20-08-2026,130,76,98.3,85,175,Dr. Lewis
+P708,33,Gastroenteritis,20-08-2026,92,84,99.8,62,162,Dr. Hall
+P709,50,Bronchitis,20-08-2026,115,86,100.4,73,170,Dr. Allen
+P710,41,Thyroid Disorder,21-08-2026,100,74,98.6,66,158,Dr. Young
+P711,58,Kidney Stones,21-08-2026,140,82,98.9,80,180,Dr. King
+P212,26,Appendicitis,21-08-2026,90,96,100.1,55,152,Dr. Wright
+P713,49,Sinusitis,22-08-2026,98,78,99.0,72,167,Dr. Scott
+P714,63,Type 2 Diabetes,22-08-2026,175,75,98.4,88,174,Dr. Green
+P715,35,Anemia,22-08-2026,85,85,98.2,60,160,Dr. Baker
+P716,70,Heart Failure,23-08-2026,145,102,97.9,76,169,Dr. Adams
+P717,48,Dermatitis,23-08-2026,102,72,98.6,68,164,Dr. Clark
+P718,55,Hepatitis B,23-08-2026,120,80,99.2,79,176,Dr. Smith
+P719,31,Fractured Radius,24-08-2026,95,79,98.5,65,171,Dr. Evans
+P720,42,Food Poisoning,24-08-2026,110,90,100.8,69,163,Dr. Hall
+P721,60,Chronic Pain,24-08-2026,135,74,98.4,84,178,Dr. Lewis
+P722,39,Vertigo,25-08-2026,91,68,98.6,63,159,Dr. Young
+P723,46,Conjunctivitis,25-08-2026,99,76,98.7,71,166,Dr. Allen
+P724,53,Gallstones,25-08-2026,150,84,99.5,81,173,Dr. King
+P725,28,Severe Allergy,26-08-2026,89,105,99.0,59,157,Dr. Wright

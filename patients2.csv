@@ -1,0 +1,4 @@
+patient_id,Age,Disease,Admission_Date
+P201,45,Hypertension,2026-03-01
+P202,52,Diabetes,2026-03-02
+P203,38,Asthma,2026-03-03

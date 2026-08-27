@@ -1,0 +1,4 @@
+patient_id,age,blood_pressure,diagnosis,room_number
+P401,45,120,Hypertension,302
+P402,38,115,Asthma,405
+P403,62,130,Diabetes,108

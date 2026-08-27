@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Data Security Portal</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- ================= 1. LOGIN PAGE ================= -->
+    <div id="login-page" class="page active">
+
+        <div class="login-card">
+
+            <div class="login-header">
+                <i class="fa-solid fa-hospital-user fa-3x"></i>
+                <h2>Hospital Secure Portal</h2>
+                <p>Hybrid Homomorphic Encryption System</p>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <form id="login-form" onsubmit="handleLogin(event)">
+
+                <div class="form-group">
+                    <label>
+                        <i class="fa-solid fa-id-badge"></i>
+                        Hospital ID
+                    </label>
+
+                    <input
+                        type="text"
+                        id="login-hospital-id"
+                        required
+                        placeholder="e.g. hospital-a">
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <i class="fa-solid fa-envelope"></i>
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="login-email"
+                        required
+                        placeholder="admin@hospital.com">
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <i class="fa-solid fa-lock"></i>
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="login-password"
+                        required
+                        placeholder="Enter your password">
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    Login to Dashboard
+                </button>
+
+            </form>
+
+            <!-- REGISTER LINK -->
+            <div class="auth-switch">
+                <span>New hospital?</span>
+
+                <button
+                    type="button"
+                    class="link-button"
+                    onclick="showRegisterPage()">
+                    Register Hospital
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- ================= 2. REGISTER PAGE ================= -->
+    <div id="register-page" class="page hidden">
+
+        <div class="login-card">
+
+            <div class="login-header">
+                <i class="fa-solid fa-hospital fa-3x"></i>
+
+                <h2>Register Hospital</h2>
+
+                <p>
+                    Create a secure hospital account
+                </p>
+            </div>
+
+            <form id="register-form" onsubmit="handleRegister(event)">
+
+                <div class="form-group">
+
+                    <label>
+                        <i class="fa-solid fa-id-badge"></i>
+                        Hospital ID
+                    </label>
+
+                    <input
+                        type="text"
+                        id="register-hospital-id"
+                        required
+                        placeholder="e.g. hospital-a">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        <i class="fa-solid fa-envelope"></i>
+                        Hospital Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="register-email"
+                        required
+                        placeholder="admin@hospital.com">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        <i class="fa-solid fa-lock"></i>
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="register-password"
+                        required
+                        minlength="8"
+                        placeholder="Create a password">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        <i class="fa-solid fa-lock"></i>
+                        Confirm Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="register-confirm-password"
+                        required
+                        minlength="8"
+                        placeholder="Confirm your password">
+
+                </div>
+
+
+                <button type="submit" class="btn-primary">
+                    <i class="fa-solid fa-user-plus"></i>
+                    Register Hospital
+                </button>
+
+            </form>
+
+
+            <div id="register-result" class="alert hidden"></div>
+
+
+            <div class="auth-switch">
+
+                <span>Already registered?</span>
+
+                <button
+                    type="button"
+                    class="link-button"
+                    onclick="showLoginPage()">
+                    Back to Login
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= 3. SECRET KEY SETUP PAGE ================= -->
+    <div id="secret-key-setup-page" class="page hidden">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="fa-solid fa-key fa-3x"></i>
+                <h2>Set Secret Key</h2>
+                <p>Create the key required for protected operations</p>
+            </div>
+
+            <form id="secret-key-setup-form" onsubmit="handleSecretKeySetup(event)">
+                <div class="form-group">
+                    <label><i class="fa-solid fa-key"></i> Secret Key</label>
+                    <input type="password" id="setup-secret-key" required minlength="8" placeholder="Create a secret key">
+                </div>
+                <div class="form-group">
+                    <label><i class="fa-solid fa-key"></i> Confirm Secret Key</label>
+                    <input type="password" id="setup-confirm-secret-key" required minlength="8" placeholder="Confirm your secret key">
+                </div>
+                <button type="submit" class="btn-primary">
+                    <i class="fa-solid fa-check"></i> Save Secret Key
+                </button>
+            </form>
+            <div id="secret-key-setup-result" class="alert hidden"></div>
+        </div>
+    </div>
+
+
+    <!-- ================= 3. DASHBOARD CONTAINER ================= -->
+    <div id="dashboard-container" class="app-container hidden">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>MedSec Portal</span>
+            </div>
+
+            <ul class="sidebar-menu">
+
+                <li class="active"
+                    onclick="switchTab('dashboard')">
+
+                    <i class="fa-solid fa-chart-pie"></i>
+                    Dashboard
+
+                </li>
+
+                <li onclick="switchTab('upload')">
+
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    Upload Dataset
+
+                </li>
+
+                <li onclick="switchTab('search')">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    Search Patient
+
+                </li>
+
+                <li onclick="switchTab('add')">
+
+                    <i class="fa-solid fa-user-plus"></i>
+                    Add Patient
+
+                </li>
+
+                <li onclick="switchTab('update')">
+
+                    <i class="fa-solid fa-user-pen"></i>
+                    Update Patient
+
+                </li>
+
+                <li onclick="switchTab('delete')">
+
+                    <i class="fa-solid fa-user-slash"></i>
+                    Delete Patient
+
+                </li>
+
+                <li onclick="handleLogout()"
+                    class="logout-btn">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+
+                </li>
+
+            </ul>
+
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <!-- TOP NAVBAR -->
+            <header class="top-navbar">
+
+                <div class="nav-title">
+                    <h3 id="current-view-title">
+                        Dashboard Overview
+                    </h3>
+                </div>
+
+                <div class="user-profile">
+
+                    <span
+                        id="display-hosp-badge"
+                        class="badge">
+                        Hospital
+                    </span>
+
+                    <span
+                        id="key-status-badge"
+                        class="badge locked">
+
+                        <i class="fa-solid fa-key"></i>
+                        Key Locked
+
+                    </span>
+
+                    <button
+                        class="btn-unlock"
+                        onclick="openKeyModal()">
+
+                        <i class="fa-solid fa-unlock-keyhole"></i>
+                        Enter Secret Key
+
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <!-- CONTENT -->
+            <div class="content-body">
+
+                <!-- ================= DASHBOARD ================= -->
+                <section
+                    id="tab-dashboard"
+                    class="tab-pane active">
+
+                    <div class="stats-grid">
+
+                        <div class="stat-card">
+
+                            <i class="fa-solid fa-database fa-2x"></i>
+
+                            <div>
+                                <h4>Cloud Bucket</h4>
+                                <p id="dash-bucket">Hospital</p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="stat-card">
+
+                            <i class="fa-solid fa-users fa-2x"></i>
+
+                            <div>
+                                <h4>System Security</h4>
+                               <!-- <p>AES-256 & BFV HE</p> -->
+                            </div>
+
+                        </div>
+
+
+                        <div class="stat-card">
+
+                            <i class="fa-solid fa-lock-open fa-2x"></i>
+
+                            <div>
+                                <h4>Secret Key State</h4>
+
+                                <p
+                                    id="dash-key-state"
+                                    style="color:#e74c3c;">
+                                    Locked
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="welcome-banner">
+
+                        <h2>
+                            Welcome to Privacy Preserving Cloud System
+                        </h2>
+
+                        <p>
+                            Manage, encrypt, and securely query patient
+                            health records using advanced Homomorphic
+                            Encryption directly connected to your Flask
+                            backend and Supabase storage.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================= UPLOAD ================= -->
+                <section id="tab-upload" class="tab-pane">
+
+                    <div class="card">
+
+                        <h3>
+                            <i class="fa-solid fa-file-csv"></i>
+                            Upload & Encrypt Dataset
+                        </h3>
+
+                        <p class="subtitle">
+                            Select your CSV file and enter your hospital
+                            encryption secret key.
+                        </p>
+
+                        <form
+                            id="upload-form"
+                            onsubmit="handleUpload(event)">
+
+                            <div class="form-group">
+
+                                <label>Hospital ID</label>
+
+                                <input
+                                    type="text"
+                                    id="upload-hosp-id"
+                                    readonly>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    Secret Key (Encryption Passphrase)
+                                </label>
+
+                                <input
+                                    type="password"
+                                    id="upload-secret-key"
+                                    required
+                                    placeholder="Enter secret key">
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>CSV Patient File</label>
+
+                                <input
+                                    type="file"
+                                    id="upload-file"
+                                    accept=".csv"
+                                    required>
+
+                            </div>
+
+
+                            <button
+                                type="submit"
+                                class="btn-primary">
+
+                                Upload & Encrypt
+
+                            </button>
+
+                        </form>
+
+                        <div
+                            id="upload-loader"
+                            class="loader hidden">
+                        </div>
+
+                        <div
+                            id="upload-result"
+                            class="alert hidden">
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================= SEARCH ================= -->
+                <section id="tab-search" class="tab-pane">
+
+                    <div class="card">
+
+                        <h3>
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            Search Encrypted Patient Record
+                        </h3>
+
+                        <div class="search-box-group">
+
+                            <input
+                                type="text"
+                                id="search-patient-id"
+                                placeholder="Enter Patient ID">
+
+                            <button
+                                class="btn-primary search-button"
+                                onclick="searchPatient()">
+
+                                Search
+
+                            </button>
+
+                        </div>
+
+                        <div
+                            id="patient-result-container"
+                            class="result-box hidden">
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================= ADD PATIENT ================= -->
+                <section id="tab-add" class="tab-pane">
+
+                    <div class="card">
+
+                        <h3>
+                            <i class="fa-solid fa-user-plus"></i>
+                            Add New Patient Record
+                        </h3>
+
+                        <form
+                            id="add-form"
+                            onsubmit="promptKeyForAction(event, 'add')">
+
+                            <div class="form-grid">
+
+                                <div class="form-group">
+                                    <label>Patient ID</label>
+                                    <input
+                                        type="text"
+                                        id="add-pid"
+                                        required
+                                        placeholder="EnterPatient ID(eg:P101)">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input
+                                        type="text"
+                                        id="add-name"
+                                        required
+                                        placeholder="Enter Name">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Age</label>
+                                    <input
+                                        type="number"
+                                        id="add-age"
+                                        required
+                                        placeholder="Enter Age">
+                                </div>
+
+                              <div class="form-group">
+    <label for="add-gender">Gender</label>
+    <select id="add-gender" required>
+        <option value="" disabled selected>Select Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+    </select>
+</div>
+                                <div class="form-group">
+                                    <label>Disease</label>
+                                    <input
+                                        type="text"
+                                        id="add-disease"
+                                        required
+                                        placeholder="Enter Disease">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Admission Date</label>
+                                    <input
+                                        type="date"
+                                        id="add-date"
+                                        required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Blood Sugar</label>
+                                    <input
+                                        type="number"
+                                        id="add-bs"
+                                        required
+                                        placeholder="Enter Blood Sugar level">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Heart Rate</label>
+                                    <input
+                                        type="number"
+                                        id="add-hr"
+                                        required
+                                        placeholder="Enter Heart Rate">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Temperature</label>
+                                    <input
+                                        type="number"
+                                        step="0.1"
+                                        id="add-temp"
+                                        required
+                                        placeholder="Enter Temperature">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Weight (kg)</label>
+                                    <input
+                                        type="number"
+                                        id="add-weight"
+                                        required
+                                        placeholder="Enter Weight(kg)">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Height (cm)</label>
+                                    <input
+                                        type="number"
+                                        id="add-height"
+                                        required
+                                        placeholder="Enter Height(cm)">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Doctor Name</label>
+                                    <input
+                                        type="text"
+                                        id="add-doc"
+                                        required
+                                        placeholder="Ex: Dr.XYZ">
+                                </div>
+
+                            </div>
+
+                            <button
+                                type="submit"
+                                class="btn-primary">
+
+                                Save & Encrypt Patient
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================= UPDATE ================= -->
+                <section id="tab-update" class="tab-pane">
+
+                    <div class="card">
+
+                        <h3>
+                            <i class="fa-solid fa-user-pen"></i>
+                            Update Patient Record
+                        </h3>
+
+                        <div class="search-box-group">
+
+                            <input
+                                type="text"
+                                id="update-target-id"
+                                placeholder="Enter Patient ID to Load">
+
+                            <button
+                                class="btn-secondary"
+                                onclick="loadPatientForUpdate()">
+
+                                Load Record
+
+                            </button>
+
+                        </div>
+
+
+                        <form
+                            id="update-form"
+                            class="hidden"
+                            onsubmit="promptKeyForAction(event, 'update')">
+
+                            <hr
+                                style="margin:20px 0;
+                                       border:0;
+                                       border-top:1px solid #ddd;">
+
+                            <div class="form-grid">
+
+                                <div class="form-group">
+
+                                    <label>Disease</label>
+
+                                    <input
+                                        type="text"
+                                        id="up-disease"
+                                        required>
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label>Blood Sugar</label>
+
+                                    <input
+                                        type="number"
+                                        id="up-bs"
+                                        required>
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label>Heart Rate</label>
+
+                                    <input
+                                        type="number"
+                                        id="up-hr"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+
+                            <button
+                                type="submit"
+                                class="btn-primary">
+
+                                Commit Secure Update
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================= DELETE ================= -->
+                <section id="tab-delete" class="tab-pane">
+
+                    <div
+                        class="card"
+                        style="max-width:500px;
+                               margin:0 auto;">
+
+                        <h3 style="color:#e74c3c;">
+
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            Delete Patient Record
+
+                        </h3>
+
+                        <p class="subtitle">
+
+                            Permanently remove patient index
+                            reference from cloud storage.
+
+                        </p>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Patient ID to Delete
+                            </label>
+
+                            <input
+                                type="text"
+                                id="delete-pid"
+                                placeholder="e.g. P102">
+
+                        </div>
+
+
+                        <button
+                            class="btn-danger"
+                            onclick="confirmDeletePatient()">
+
+                            Delete Record
+
+                        </button>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <!-- ================= SECRET KEY MODAL ================= -->
+    <div id="key-modal" class="modal hidden">
+
+        <div class="modal-content">
+
+            <span
+                class="close"
+                onclick="closeKeyModal()">
+                &times;
+            </span>
+
+            <h3>
+                <i
+                    class="fa-solid fa-key"
+                    style="color:#3498db;">
+                </i>
+
+                Hospital Secret Key Required
+            </h3>
+
+            <p>
+                Enter your hospital's secret decryption key
+                to authorize data operations.
+            </p>
+
+
+            <div class="form-group">
+
+                <input
+                    type="password"
+                    id="modal-secret-key"
+                    placeholder="Enter secret key here...">
+
+            </div>
+
+
+            <button
+                class="btn-primary"
+                onclick="verifySecretKey()">
+
+                Authorize Key
+
+            </button>
+
+
+            <div
+                id="modal-error"
+                class="error-text">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Notification Toast -->
+    <div
+        id="toast"
+        class="toast hidden">
+    </div>
+
+
+    <!-- JavaScript -->
+    <script
+        src="{{ url_for('static', filename='js/app.js') }}">
+    </script>
+
+</body>
+</html>
