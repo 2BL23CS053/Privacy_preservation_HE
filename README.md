@@ -63,6 +63,6 @@ python run.py
 
 ## Contributors
 
-- **[Jahnavi Jatti / 2BL23CS053]** 
-- **[B A Sahana  / basahana1968]** 
-- **[Deepa ]** — 
+- **Jahnavi Jatti / 2BL23CS053** 
+- **B A Sahana  / basahana1968** 
+- **Deepa **
